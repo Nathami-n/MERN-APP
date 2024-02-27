@@ -24,6 +24,7 @@ const logger = (req, res, next) => {
     `${req.method}\t ${req.headers.origin}\t ${req.url}`,
     "reqLog.txt"
   );
+  next();
 };
 
 export {logger, eventLogger}
