@@ -4,7 +4,7 @@ import { Header } from "./components";
 
 const App = () => {
   return (
-    <div>
+    <main className="bg-[#fafbfc]">
       <Header />
       <Routes>
         <Route exact path="/" element={<Home />} />
@@ -13,7 +13,7 @@ const App = () => {
         <Route exact path="/sign-up" element={<SignUp />} />
         <Route exact path="/about" element={<About />} />
       </Routes>
-    </div>
+    </main>
   );
 };
 
