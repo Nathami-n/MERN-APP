@@ -6,6 +6,11 @@ const SignUp = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const handleFormSubmit = (e) => {
     e.preventDefault();
+    dispatch({
+      type: "button",
+      payload:true,
+    });
+    
   };
   const handleInputChange = (e) => {
     dispatch({
@@ -62,7 +67,7 @@ const SignUp = () => {
             </div>
             <div className="w-full">
               <button className="text-white bg-gradient-to-br from-pink-400 to-red-600 w-full p-2 hover:opacity-90 transition-all ">
-               {state.isSubmitting} <p>Sign-up</p>
+                {state.isSubmitting ? <p> submitting...</p> : <p>Sign-up</p>}
               </button>
             </div>
           </form>

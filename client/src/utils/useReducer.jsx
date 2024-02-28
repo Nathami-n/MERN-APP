@@ -18,6 +18,9 @@ export const reducer = (state, action) => {
         },
       };
     }
+    case "button":{
+        return {...state, isSubmitting:action.payload}
+    }
     default: {
       return state;
     }
