@@ -3,6 +3,10 @@ import { format } from "date-fns";
 import path from "path";
 import { appendFile, mkdir } from "fs/promises";
 import fs from "fs";
+const __dirname = path.dirname(new URL(import.meta.url).pathname);
+const cwd = process.cwd();
+console.log(__dirname);
+console.log(process.cwd());
 
 const eventLogger = async (message, file) => {
   const dateItem = `${format(new Date(), "yyyyMMdd\tHH:mm:ss")}`;
@@ -10,10 +14,10 @@ const eventLogger = async (message, file) => {
   const logItem = `${dateItem}\t ${id}\t ${message}\n`;
 
   try {
-    if (!fs.existsSync(path.join('/middleware', "..", "logs"))) {
-      await mkdir(path.join('/middleware', "..", "logs"));
+    if (!fs.existsSync(path.resolve(cwd, "api", "logs"))) {
+      await mkdir(path.resolve(cwd, "api", "logs"));
     }
-    await appendFile(path.join('/middleware', "..", "logs", file), logItem);
+    await appendFile(path.resolve(cwd, "api", "logs", file), logItem);
   } catch (err) {
     console.error(err);
   }
@@ -27,4 +31,4 @@ const logger = (req, res, next) => {
   next();
 };
 
-export {logger, eventLogger}
+export { logger, eventLogger };

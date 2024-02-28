@@ -9,8 +9,8 @@ import { errorLogger } from "./middleware/Errormiddleware.js";
 const app = express();
 //middleware
 app.use(express.json());
-app.use(logger);
 app.use(cors(corsOptionsDelegate))
+app.use(logger);
 
 //routes
 app.use("/api/v1/sign-up", userRouter);
