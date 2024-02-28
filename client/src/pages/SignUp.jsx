@@ -1,10 +1,11 @@
-import { useReducer, useState } from "react";
-import { Link } from "react-router-dom";
+import { useReducer } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import api from "../utils/postAxios";
 import { reducer, initialState } from "../utils/useReducer";
 const url = "api/v1/sign-up";
 
 const SignUp = () => {
+  const navigate = useNavigate();
   const [state, dispatch] = useReducer(reducer, initialState);
   const handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -24,11 +25,7 @@ const SignUp = () => {
     } catch (error) {
       console.log(error.stack);
     }
-    dispatch({
-      type: "input",
-      field: e.target.id,
-      payload: "",
-    });
+    dispatch({ type: "reset" });
     dispatch({ type: "button", payload: false });
   };
   const handleInputChange = (e) => {

@@ -21,6 +21,9 @@ export const reducer = (state, action) => {
     case "button":{
         return {...state, isSubmitting:action.payload}
     }
+    case 'reset' : {
+      return initialState
+    }
     default: {
       return state;
     }
