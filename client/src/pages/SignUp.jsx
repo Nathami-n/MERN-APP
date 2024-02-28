@@ -1,16 +1,35 @@
 import { useReducer, useState } from "react";
 import { Link } from "react-router-dom";
+import api from "../utils/postAxios";
 import { reducer, initialState } from "../utils/useReducer";
+const url = "api/v1/sign-up";
 
 const SignUp = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
     dispatch({
       type: "button",
-      payload:true,
+      payload: true,
     });
-    
+    const user = {
+      name: state.formData.name,
+      password: state.formData.password,
+    };
+    try {
+      const { data } = await api.post(url, JSON.stringify(user), {
+        headers: { "Content-Type": "application/json" },
+      });
+      console.log(data);
+    } catch (error) {
+      console.log(error.stack);
+    }
+    dispatch({
+      type: "input",
+      field: e.target.id,
+      payload: "",
+    });
+    dispatch({ type: "button", payload: false });
   };
   const handleInputChange = (e) => {
     dispatch({
