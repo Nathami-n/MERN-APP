@@ -7,6 +7,13 @@ const SignUp = () => {
   const handleFormSubmit = (e) => {
     e.preventDefault();
   };
+  const handleInputChange = (e) => {
+    dispatch({
+      type: "input",
+      field: e.target.id,
+      payload: e.target.value,
+    });
+  };
   return (
     <section className=" bg-[#fafbfc] min-h-screen text-[#56697e] flex justify-center">
       <div className="flex flex-col gap-9 xl:gap-4">
@@ -33,6 +40,8 @@ const SignUp = () => {
               <input
                 type="text"
                 id="name"
+                value={state.formData.name}
+                onChange={handleInputChange}
                 placeholder="e.g. Joe"
                 className="outline-none border p-3 "
               />
@@ -45,13 +54,15 @@ const SignUp = () => {
               <input
                 type="text"
                 id="password"
+                value={state.formData.password}
+                onChange={handleInputChange}
                 placeholder="e.g. Joe"
                 className="outline-none border p-3 "
               />
             </div>
             <div className="w-full">
               <button className="text-white bg-gradient-to-br from-pink-400 to-red-600 w-full p-2 hover:opacity-90 transition-all ">
-                <p>Sign-up</p>
+               {state.isSubmitting} <p>Sign-up</p>
               </button>
             </div>
           </form>
