@@ -10,10 +10,10 @@ const eventLogger = async (message, file) => {
   const logItem = `${dateItem}\t ${id}\t ${message}\n`;
 
   try {
-    if (!fs.existsSync(path.join(__dirname, "..", "logs"))) {
-      await mkdir(path.join(__dirname, "..", "logs"));
+    if (!fs.existsSync(path.join('/middleware', "..", "logs"))) {
+      await mkdir(path.join('/middleware', "..", "logs"));
     }
-    await appendFile(path.join(__dirname, "..", "logs", "file"), logItem);
+    await appendFile(path.join('/middleware', "..", "logs", file), logItem);
   } catch (err) {
     console.error(err);
   }
