@@ -11,3 +11,7 @@ export const signUp = async (req, res) => {
     console.error(err);
   }
 };
+
+ export const signIn = async (req, res) => {
+  
+ }
