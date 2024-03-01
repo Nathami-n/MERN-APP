@@ -78,3 +78,4 @@
 20240301	13:57:42	 951dc667-fd8f-4eaa-9b08-cb446430432e	 POST	 http://localhost:5173	 /api/v1/sign-in
 20240301	14:19:43	 a931550d-647b-4afe-b383-7d3ea046fd8b	 POST	 http://localhost:5173	 /api/v1/sign-in
 20240301	14:19:43	 7028ed4e-7309-427c-a711-992d56febd59	 POST	 http://localhost:5173	 /api/v1/sign-in
+20240301	15:40:24	 2635cc3c-56dc-45ec-b299-b5585e664943	 POST	 http://localhost:5173	 /api/v1/sign-up
