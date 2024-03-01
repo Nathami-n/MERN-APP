@@ -3,10 +3,7 @@ import { format } from "date-fns";
 import path from "path";
 import { appendFile, mkdir } from "fs/promises";
 import fs from "fs";
-const __dirname = path.dirname(new URL(import.meta.url).pathname);
 const cwd = process.cwd();
-console.log(__dirname);
-console.log(process.cwd());
 
 const eventLogger = async (message, file) => {
   const dateItem = `${format(new Date(), "yyyyMMdd\tHH:mm:ss")}`;
