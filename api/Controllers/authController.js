@@ -5,22 +5,35 @@ import dotenv from "dotenv";
 dotenv.config();
 
 export const signUp = async (req, res) => {
-  const { name, password } = req.body;
+  const { user_name, name, password } = req.body;
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
-    const createdUser = await User.create({ name: name, password: hashedPassword });
-    res.status(201).json({ success: true, data: createdUser });
+    const createdUser = await User.create({
+      name: name,
+      username: user_name,
+      password: hashedPassword,
+    });
+    res.status(201).json({
+      success: true,
+      data: `${createdUser.name} created successfully`,
+    });
   } catch (err) {
     console.error(err);
   }
 };
 
-export const signIn = async (req, res) => {
+export const signIn = async (req, res, next) => {
   const { name, password } = req.body;
   const foundUser = await User.findOne({ name });
-  if (!foundUser) return;
+  if (!foundUser) {
+    next({ message: "not found", status: 404 });
+    return res.status(404).send({message:"user not found"})
+  }
   const validPassord = await bcrypt.compare(password, foundUser.password);
-  if (!validPassord) return;
+  if (!validPassord) {
+    next({ message: "invalid credentials", status: 401 });
+    return res.status(401).json({ message: "invalid credetials" });
+  }
   const token = jsonwebtoken.sign(
     { id: foundUser._id },
     process.env.JWT_ACCESS_TOKEN

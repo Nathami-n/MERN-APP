@@ -59,7 +59,7 @@ const SignUp = () => {
             </p>
           </div>
         </div>
-        <div className="w-[414px] h-[400px] bg-white shadow-md rounded-xl">
+        <div className="w-[414px] h-[430px] bg-white shadow-md rounded-xl">
           <form onSubmit={handleFormSubmit} className="p-6 flex flex-col gap-8">
             <div className="flex flex-col gap-1">
               <label htmlFor="user_name" className="font-bold text-md">

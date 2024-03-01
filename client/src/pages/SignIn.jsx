@@ -2,10 +2,13 @@ import { useReducer } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../utils/postAxios";
 import { reducer, initialState } from "../utils/useReducer";
+import { useState } from "react";
+import {GiPadlock, GiPadlockOpen} from 'react-icons/gi'
 const url = "api/v1/sign-in";
 
 const SignIn = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const [isOpen, setIsOpen] = useState(false);
   const [state, dispatch] = useReducer(reducer, initialState);
   const handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -27,7 +30,7 @@ const SignIn = () => {
     }
     dispatch({ type: "reset" });
     dispatch({ type: "button", payload: false });
-    navigate('/')
+    navigate("/");
   };
   const handleInputChange = (e) => {
     dispatch({
@@ -35,6 +38,9 @@ const SignIn = () => {
       field: e.target.id,
       payload: e.target.value,
     });
+  };
+  const handlePassword = () => {
+    setIsOpen(!isOpen);
   };
   return (
     <section className=" bg-[#fafbfc] min-h-screen text-[#56697e] flex justify-center">
@@ -73,14 +79,27 @@ const SignIn = () => {
               <label htmlFor="password" className="font-bold text-md">
                 Password
               </label>
-              <input
-                type="text"
-                id="password"
-                value={state.formData.password}
-                onChange={handleInputChange}
-                placeholder="e.g. Joe"
-                className="outline-none border p-3 "
-              />
+              <div className="flex relative">
+                <input
+                  type={isOpen ? "text" : "password"}
+                  id="password"
+                  value={state.formData.password}
+                  onChange={handleInputChange}
+                  placeholder="e.g. Joe@.3432"
+                  className="outline-none border relative p-3 flex-1 "
+                />
+                {!isOpen ? (
+                  <GiPadlock
+                    onClick={handlePassword}
+                    className="absolute right-4 top-4 text-xl text-red-800 cursor-pointer"
+                  />
+                ) : (
+                  <GiPadlockOpen
+                    onClick={handlePassword}
+                    className="absolute right-4 top-4 text-xl text-red-800 cursor-pointer"
+                  />
+                )}
+              </div>
             </div>
             <div className="w-full">
               <button className="text-white bg-gradient-to-br from-pink-400 to-red-600 w-full p-2 hover:opacity-90 transition-all ">
