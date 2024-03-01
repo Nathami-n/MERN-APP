@@ -27,6 +27,7 @@ const SignUp = () => {
     }
     dispatch({ type: "reset" });
     dispatch({ type: "button", payload: false });
+    navigate('/sign-in')
   };
   const handleInputChange = (e) => {
     dispatch({
