@@ -1,4 +1,4 @@
-import { useReducer } from "react";
+import { useReducer, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../utils/postAxios";
 import { reducer, initialState } from "../utils/useReducer";
@@ -36,6 +36,7 @@ const SignUp = () => {
       payload: e.target.value,
     });
   };
+  const [isOpen, setIsOpen] = useState(false);
   return (
     <section className=" bg-[#fafbfc] min-h-screen text-[#56697e] flex justify-center">
       <div className="flex flex-col gap-9 xl:gap-4">
@@ -62,6 +63,7 @@ const SignUp = () => {
               <input
                 type="text"
                 id="name"
+                autoComplete="false"
                 value={state.formData.name}
                 onChange={handleInputChange}
                 placeholder="e.g. Joe"
@@ -74,7 +76,7 @@ const SignUp = () => {
                 Password
               </label>
               <input
-                type="text"
+                type={isOpen? 'text': 'password'}
                 id="password"
                 value={state.formData.password}
                 onChange={handleInputChange}
