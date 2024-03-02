@@ -27,19 +27,22 @@ export const signIn = async (req, res, next) => {
   const foundUser = await User.findOne({ name });
   if (!foundUser) {
     next({ message: "not found", status: 404 });
-    return res.status(404).send({ success:false, message:"user not found"})
+    return res.status(404).send({ success: false, message: "user not found" });
   }
-  const validPassord = await bcrypt.compare(password, foundUser.password);
-  if (!validPassord) {
+  const validPassword = await bcrypt.compare(password, foundUser.password);
+  if (!validPassword) {
     next({ message: "invalid credentials", status: 401 });
-    return res.status(401).json({ success:false, message: "invalid credetials" });
+    return res
+      .status(401)
+      .json({ success: false, message: "invalid credentials" });
   }
   const token = jsonwebtoken.sign(
     { id: foundUser._id },
     process.env.JWT_ACCESS_TOKEN
   );
+  const { password: pass, ...rest } = foundUser.toObject();
   res
     .cookie("access_token", token, { httpOnly: true })
     .status(200)
-    .json({ success: true, data: foundUser });
+    .json({ success: true, data: rest });
 };
