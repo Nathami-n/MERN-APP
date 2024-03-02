@@ -31,7 +31,7 @@ const SignIn = () => {
           "Content-Type":"application/json"
         },
       });
-      dispatch(setUser({user:data}));
+      dispatch(setUser({user:data.data}));
       dispatch(clearForm());
     } catch (error) {
       dispatch(submitFormError({ data: error.message }));
