@@ -12,7 +12,7 @@ const url = "api/v1/sign-up";
 import { GiPadlock, GiPadlockOpen } from "react-icons/gi";
 
 const SignUp = () => {
-  const { user_name, name, password } = useSelector(
+  const { user_name, email, password } = useSelector(
     (state) => state.form.formData
   );
   const { isSubmitting, error } = useSelector((state) => state.form);
@@ -23,7 +23,7 @@ const SignUp = () => {
     const userToPost = {
       user_name,
       password,
-      name,
+      email,
     };
     try {
       dispatch(formSubmitting());
@@ -83,13 +83,13 @@ const SignUp = () => {
               />
             </div>
             <div className="flex flex-col gap-1">
-              <label htmlFor="name" className="font-bold text-md">
-                Name
+              <label htmlFor="email" className="font-bold text-md">
+                Email
               </label>
               <input
                 type="text"
-                id="name"
-                value={name}
+                id="email"
+                value={email}
                 autoComplete="false"
                 onChange={handleInputChange}
                 placeholder="e.g. Joe"

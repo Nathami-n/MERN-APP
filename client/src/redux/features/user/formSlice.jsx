@@ -4,7 +4,7 @@ export const formSlice = createSlice({
   name: "form",
   initialState: {
     formData: {
-      name: "",
+      email: "",
       user_name: "",
       password: "",
     },
@@ -30,8 +30,6 @@ export const formSlice = createSlice({
     },
   },
 });
-
-console.log(formSlice);
 
 //action creators
 export const { updateform, formSubmitting, clearForm, submitFormError } =

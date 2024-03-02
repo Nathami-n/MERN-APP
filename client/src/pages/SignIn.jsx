@@ -14,25 +14,26 @@ const url = "api/v1/sign-in";
 
 const SignIn = () => {
   const dispatch = useDispatch();
-  const { name, password } = useSelector((state) => state.form.formData);
+  const { email, password } = useSelector((state) => state.form.formData);
   const { isSubmitting } = useSelector((state) => state.form);
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     const sendUser = {
-      name,
+      email,
       password,
     };
     try {
       dispatch(formSubmitting());
       const { data } = await api.post(url, JSON.stringify(sendUser), {
         headers: {
-          "Content-Type":"application/json"
+          "Content-Type": "application/json",
         },
       });
-      dispatch(setUser({user:data.data}));
+      dispatch(setUser({ user: data.data }));
       dispatch(clearForm());
+      navigate("/");
     } catch (error) {
       dispatch(submitFormError({ data: error.message }));
     }
@@ -63,13 +64,13 @@ const SignIn = () => {
         <div className="w-[414px] h-[400px] bg-white shadow-md rounded-xl">
           <form onSubmit={handleFormSubmit} className="p-6 flex flex-col gap-8">
             <div className="flex flex-col gap-1">
-              <label htmlFor="name" className="font-bold text-md">
-                Name
+              <label htmlFor="email" className="font-bold text-md">
+                Email
               </label>
               <input
                 type="text"
-                id="name"
-                value={name}
+                id="email"
+                value={email}
                 onChange={handleInputChange}
                 placeholder="e.g. Joe"
                 className="outline-none border p-3 "
