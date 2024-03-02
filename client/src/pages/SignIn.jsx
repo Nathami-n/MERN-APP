@@ -1,16 +1,45 @@
 import { Link, useNavigate } from "react-router-dom";
 import api from "../utils/postAxios";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  clearForm,
+  formSubmitting,
+  submitFormError,
+  updateform,
+} from "../redux/features/user/formSlice";
 import { useState } from "react";
 import { GiPadlock, GiPadlockOpen } from "react-icons/gi";
+import { setUser } from "../redux/features/user/userSlice";
 const url = "api/v1/sign-in";
 
 const SignIn = () => {
+  const dispatch = useDispatch();
+  const { name, password } = useSelector((state) => state.form.formData);
+  const { isSubmitting } = useSelector((state) => state.form);
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const handleFormSubmit = async (e) => {
     e.preventDefault();
+    const sendUser = {
+      name,
+      password,
+    };
+    try {
+      dispatch(formSubmitting());
+      const { data } = await api.post(url, JSON.stringify(sendUser), {
+        headers: {
+          "Content-Type":"application/json"
+        },
+      });
+      dispatch(setUser({user:data}));
+      dispatch(clearForm());
+    } catch (error) {
+      dispatch(submitFormError({ data: error.message }));
+    }
   };
-  const handleInputChange = (e) => {};
+  const handleInputChange = (e) => {
+    dispatch(updateform({ field: e.target.id, data: e.target.value }));
+  };
   const handlePassword = () => {
     setIsOpen(!isOpen);
   };
@@ -40,7 +69,7 @@ const SignIn = () => {
               <input
                 type="text"
                 id="name"
-                value=""
+                value={name}
                 onChange={handleInputChange}
                 placeholder="e.g. Joe"
                 className="outline-none border p-3 "
@@ -55,7 +84,7 @@ const SignIn = () => {
                 <input
                   type={isOpen ? "text" : "password"}
                   id="password"
-                  value=""
+                  value={password}
                   onChange={handleInputChange}
                   placeholder="e.g. Joe@.3432"
                   className="outline-none border relative p-3 flex-1 "
@@ -75,7 +104,7 @@ const SignIn = () => {
             </div>
             <div className="w-full">
               <button className="text-white bg-gradient-to-br from-pink-400 to-red-600 w-full p-2 hover:opacity-90 transition-all ">
-                <p>Sign-In</p>
+                {isSubmitting ? <p>submitting...</p> : <p>Sign-In</p>}
               </button>
             </div>
           </form>

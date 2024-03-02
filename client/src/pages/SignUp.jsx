@@ -125,7 +125,7 @@ const SignUp = () => {
             </div>
             <div className="w-full">
               <button className="text-white bg-gradient-to-br from-pink-400 to-red-600 w-full p-2 hover:opacity-90 transition-all ">
-                {isSubmitting ? <p>submitting</p> : <p>Sign-up</p>}
+                {isSubmitting ? <p>submitting...</p> : <p>Sign-up</p>}
               </button>
             </div>
           </form>
