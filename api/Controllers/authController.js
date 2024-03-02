@@ -5,17 +5,17 @@ import dotenv from "dotenv";
 dotenv.config();
 
 export const signUp = async (req, res) => {
-  const { user_name, name, password } = req.body;
+  const { user_name, email, password } = req.body;
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
     const createdUser = await User.create({
-      name,
+      email,
       username: user_name,
       password: hashedPassword,
     });
     res.status(201).json({
       success: true,
-      data: `${createdUser.name} created successfully`,
+      data: `${createdUser.username} created successfully`,
     });
   } catch (err) {
     console.error(err);
@@ -23,8 +23,8 @@ export const signUp = async (req, res) => {
 };
 
 export const signIn = async (req, res, next) => {
-  const { name, password } = req.body;
-  const foundUser = await User.findOne({ name });
+  const { email, password } = req.body;
+  const foundUser = await User.findOne({ email });
   if (!foundUser) {
     next({ message: "not found", status: 404 });
     return res.status(404).send({ success: false, message: "user not found" });

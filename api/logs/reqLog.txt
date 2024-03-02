@@ -119,3 +119,6 @@
 20240302	23:33:11	 44330a89-c590-414b-854d-68f588f6e823	 POST	 http://localhost:5173	 /api/v1/sign-in
 20240302	23:36:51	 df18dfea-3d88-4d40-89f7-77477589513f	 POST	 http://localhost:5173	 /api/v1/sign-in
 20240302	23:39:32	 606e14ee-096e-4ed3-aa7e-aaa9040e8855	 POST	 http://localhost:5173	 /api/v1/sign-in
+20240303	00:08:02	 319b52f8-1e33-4e61-a4f1-0502b6ff15fe	 POST	 http://localhost:5173	 /api/v1/sign-up
+20240303	00:10:08	 f1cec62e-1745-409e-809c-0e9be55b1d26	 POST	 http://localhost:5173	 /api/v1/sign-up
+20240303	00:10:26	 2d170bf7-2a6d-4a3b-bf4a-309618d9f05f	 POST	 http://localhost:5173	 /api/v1/sign-in
