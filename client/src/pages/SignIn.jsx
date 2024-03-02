@@ -1,44 +1,16 @@
-import { useReducer } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../utils/postAxios";
-import { reducer, initialState } from "../utils/useReducer";
 import { useState } from "react";
-import {GiPadlock, GiPadlockOpen} from 'react-icons/gi'
+import { GiPadlock, GiPadlockOpen } from "react-icons/gi";
 const url = "api/v1/sign-in";
 
 const SignIn = () => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
-  const [state, dispatch] = useReducer(reducer, initialState);
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    dispatch({
-      type: "button",
-      payload: true,
-    });
-    const user = {
-      name: state.formData.name,
-      password: state.formData.password,
-    };
-    try {
-      const { data } = await api.post(url, JSON.stringify(user), {
-        headers: { "Content-Type": "application/json" },
-      });
-      console.log(data);
-    } catch (error) {
-      console.log(error.stack);
-    }
-    dispatch({ type: "reset" });
-    dispatch({ type: "button", payload: false });
-    navigate("/");
   };
-  const handleInputChange = (e) => {
-    dispatch({
-      type: "input",
-      field: e.target.id,
-      payload: e.target.value,
-    });
-  };
+  const handleInputChange = (e) => {};
   const handlePassword = () => {
     setIsOpen(!isOpen);
   };
@@ -68,7 +40,7 @@ const SignIn = () => {
               <input
                 type="text"
                 id="name"
-                value={state.formData.name}
+                value=""
                 onChange={handleInputChange}
                 placeholder="e.g. Joe"
                 className="outline-none border p-3 "
@@ -83,7 +55,7 @@ const SignIn = () => {
                 <input
                   type={isOpen ? "text" : "password"}
                   id="password"
-                  value={state.formData.password}
+                  value=""
                   onChange={handleInputChange}
                   placeholder="e.g. Joe@.3432"
                   className="outline-none border relative p-3 flex-1 "
@@ -103,7 +75,7 @@ const SignIn = () => {
             </div>
             <div className="w-full">
               <button className="text-white bg-gradient-to-br from-pink-400 to-red-600 w-full p-2 hover:opacity-90 transition-all ">
-                {state.isSubmitting ? <p> submitting...</p> : <p>Sign-In</p>}
+                <p>Sign-In</p>
               </button>
             </div>
           </form>

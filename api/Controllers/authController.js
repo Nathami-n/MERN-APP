@@ -9,7 +9,7 @@ export const signUp = async (req, res) => {
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
     const createdUser = await User.create({
-      name: name,
+      name,
       username: user_name,
       password: hashedPassword,
     });
@@ -27,12 +27,12 @@ export const signIn = async (req, res, next) => {
   const foundUser = await User.findOne({ name });
   if (!foundUser) {
     next({ message: "not found", status: 404 });
-    return res.status(404).send({message:"user not found"})
+    return res.status(404).send({ success:false, message:"user not found"})
   }
   const validPassord = await bcrypt.compare(password, foundUser.password);
   if (!validPassord) {
     next({ message: "invalid credentials", status: 401 });
-    return res.status(401).json({ message: "invalid credetials" });
+    return res.status(401).json({ success:false, message: "invalid credetials" });
   }
   const token = jsonwebtoken.sign(
     { id: foundUser._id },

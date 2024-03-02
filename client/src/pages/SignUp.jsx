@@ -1,47 +1,52 @@
-import { useReducer, useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  updateform,
+  submitFormError,
+  clearForm,
+  formSubmitting,
+} from "../redux/features/user/formSlice";
 import api from "../utils/postAxios";
-import { reducer, initialState } from "../utils/useReducer";
 const url = "api/v1/sign-up";
-import {GiPadlock, GiPadlockOpen} from 'react-icons/gi'
+import { GiPadlock, GiPadlockOpen } from "react-icons/gi";
 
 const SignUp = () => {
+  const { user_name, name, password } = useSelector(
+    (state) => state.form.formData
+  );
+  const { isSubmitting, error } = useSelector((state) => state.form);
   const navigate = useNavigate();
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const dispatch = useDispatch();
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    dispatch({
-      type: "button",
-      payload: true,
-    });
-    const user = {
-      name: state.formData.name,
-      user_name:state.formData.user_name,
-      password: state.formData.password,
+    const userToPost = {
+      user_name,
+      password,
+      name,
     };
     try {
-      const { data } = await api.post(url, JSON.stringify(user), {
-        headers: { "Content-Type": "application/json" },
+      dispatch(formSubmitting());
+      const { data } = await api.post(`${url}`, JSON.stringify(userToPost), {
+        headers: {
+          "Content-Type": "application/json",
+        },
       });
+      //add error handling from server
+
       console.log(data);
-    } catch (error) {
-      console.log(error.stack);
+      dispatch(clearForm({field:e.target.id, data:''}));
+    } catch (e) {
+      console.error(e);
     }
-    dispatch({ type: "reset" });
-    dispatch({ type: "button", payload: false });
-    navigate('/sign-in')
   };
   const handleInputChange = (e) => {
-    dispatch({
-      type: "input",
-      field: e.target.id,
-      payload: e.target.value,
-    });
+    dispatch(updateform({ field: e.target.id, data: e.target.value }));
   };
   const [isOpen, setIsOpen] = useState(false);
   const handlePassword = () => {
     setIsOpen(!isOpen);
-  }
+  };
   return (
     <section className=" bg-[#fafbfc] min-h-screen text-[#56697e] flex justify-center">
       <div className="flex flex-col gap-9 xl:gap-4">
@@ -68,8 +73,8 @@ const SignUp = () => {
               <input
                 type="text"
                 id="user_name"
+                value={user_name}
                 autoComplete="false"
-                value={state.formData.user_name}
                 onChange={handleInputChange}
                 placeholder="e.g. Joe"
                 className="outline-none border p-3 "
@@ -82,8 +87,8 @@ const SignUp = () => {
               <input
                 type="text"
                 id="name"
+                value={name}
                 autoComplete="false"
-                value={state.formData.name}
                 onChange={handleInputChange}
                 placeholder="e.g. Joe"
                 className="outline-none border p-3 "
@@ -94,22 +99,31 @@ const SignUp = () => {
               <label htmlFor="password" className="font-bold text-md">
                 Password
               </label>
-          <div className="flex relative">
-          <input
-                type={isOpen? 'text': 'password'}
-                id="password"
-                value={state.formData.password}
-                onChange={handleInputChange}
-                placeholder="e.g. Joe@.3432"
-                className="outline-none border relative p-3 flex-1 "
-              />
-              {!isOpen ? <GiPadlock onClick={handlePassword} className="absolute right-4 top-4 text-xl text-red-800 cursor-pointer"/>: 
-              <GiPadlockOpen onClick={handlePassword} className="absolute right-4 top-4 text-xl text-red-800 cursor-pointer"/> }
-          </div>
+              <div className="flex relative">
+                <input
+                  type={isOpen ? "text" : "password"}
+                  id="password"
+                  value={password}
+                  onChange={handleInputChange}
+                  placeholder="e.g. Joe@.3432"
+                  className="outline-none border relative p-3 flex-1 "
+                />
+                {!isOpen ? (
+                  <GiPadlock
+                    onClick={handlePassword}
+                    className="absolute right-4 top-4 text-xl text-red-800 cursor-pointer"
+                  />
+                ) : (
+                  <GiPadlockOpen
+                    onClick={handlePassword}
+                    className="absolute right-4 top-4 text-xl text-red-800 cursor-pointer"
+                  />
+                )}
+              </div>
             </div>
             <div className="w-full">
-              <button className="text-white bg-gradient-to-br from-pink-400 to-red-600 w-full p-2 hover:opacity-90 transition-all ">
-                {state.isSubmitting ? <p> submitting...</p> : <p>Sign-up</p>}
+              <button  className="text-white bg-gradient-to-br from-pink-400 to-red-600 w-full p-2 hover:opacity-90 transition-all ">
+                {isSubmitting ? <p>submitting</p> : <p>Sign-up</p>}
               </button>
             </div>
           </form>
