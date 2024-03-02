@@ -36,8 +36,10 @@ const SignUp = () => {
 
       console.log(data);
       dispatch(clearForm());
+      navigate('/sign-in')
     } catch (e) {
-      console.error(e);
+      dispatch(submitFormError({ data: e.message }));
+      dispatch(clearForm());
     }
   };
   const handleInputChange = (e) => {
@@ -122,7 +124,7 @@ const SignUp = () => {
               </div>
             </div>
             <div className="w-full">
-              <button  className="text-white bg-gradient-to-br from-pink-400 to-red-600 w-full p-2 hover:opacity-90 transition-all ">
+              <button className="text-white bg-gradient-to-br from-pink-400 to-red-600 w-full p-2 hover:opacity-90 transition-all ">
                 {isSubmitting ? <p>submitting</p> : <p>Sign-up</p>}
               </button>
             </div>

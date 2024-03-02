@@ -16,14 +16,13 @@ export const formSlice = createSlice({
       const { field, data } = action.payload;
       state.formData[field] = data;
     },
-
     formSubmitting: (state) => {
       state.isSubmitting = true;
       state.error = null;
     },
     submitFormError: (state, action) => {
       state.isSubmitting = false;
-      state.error = action.payload;
+      state.error = action.payload.data;
     },
     clearForm: (state) => {
       state.isSubmitting = false;
@@ -32,7 +31,7 @@ export const formSlice = createSlice({
   },
 });
 
-console.log(formSlice)
+console.log(formSlice);
 
 //action creators
 export const { updateform, formSubmitting, clearForm, submitFormError } =
