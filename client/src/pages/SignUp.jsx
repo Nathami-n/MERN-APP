@@ -35,7 +35,7 @@ const SignUp = () => {
       //add error handling from server
 
       console.log(data);
-      dispatch(clearForm({field:e.target.id, data:''}));
+      dispatch(clearForm());
     } catch (e) {
       console.error(e);
     }
