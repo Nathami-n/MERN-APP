@@ -10,6 +10,7 @@ import {
 import api from "../utils/postAxios";
 const url = "api/v1/sign-up";
 import { GiPadlock, GiPadlockOpen } from "react-icons/gi";
+import FirebaseAuth from "../components/FirebaseAuth";
 
 const SignUp = () => {
   const { user_name, email, password } = useSelector(
@@ -66,7 +67,7 @@ const SignUp = () => {
             </p>
           </div>
         </div>
-        <div className="w-[414px] h-[430px] bg-white shadow-md rounded-xl">
+        <div className="w-[414px] h-[500px] bg-white shadow-md rounded-xl">
           <form onSubmit={handleFormSubmit} className="p-6 flex flex-col gap-8">
             <div className="flex flex-col gap-1">
               <label htmlFor="user_name" className="font-bold text-md">
@@ -127,6 +128,9 @@ const SignUp = () => {
               <button className="text-white bg-gradient-to-br from-pink-400 to-red-600 w-full p-2 hover:opacity-90 transition-all ">
                 {isSubmitting ? <p>submitting...</p> : <p>Sign-up</p>}
               </button>
+            </div>
+            <div className="w-full">
+                  <FirebaseAuth/>
             </div>
           </form>
         </div>

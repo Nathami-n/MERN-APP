@@ -10,6 +10,7 @@ import {
 import { useState } from "react";
 import { GiPadlock, GiPadlockOpen } from "react-icons/gi";
 import { setUser } from "../redux/features/user/userSlice";
+import FirebaseAuth from "../components/FirebaseAuth";
 const url = "api/v1/sign-in";
 
 const SignIn = () => {
@@ -107,6 +108,9 @@ const SignIn = () => {
               <button className="text-white bg-gradient-to-br from-pink-400 to-red-600 w-full p-2 hover:opacity-90 transition-all ">
                 {isSubmitting ? <p>submitting...</p> : <p>Sign-In</p>}
               </button>
+            </div>
+            <div className="w-full">
+                  <FirebaseAuth/>
             </div>
           </form>
         </div>
