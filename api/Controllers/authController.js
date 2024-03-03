@@ -46,3 +46,38 @@ export const signIn = async (req, res, next) => {
     .status(200)
     .json({ success: true, data: rest });
 };
+
+export const googleAuth = async (req, res, next) => {
+  const { email, avatar, userName } = req.body;
+  try {
+    const isUserFound = await User.findOne({ email });
+    if (isUserFound) {
+      const token = jsonwebtoken.sign(
+        { id: isUserFound._id },
+        process.env.JWT_ACCESS_TOKEN
+      );
+      const { password: pass, ...rest } = isUserFound.toObject();
+      res
+        .cookie("access_token", token, { httpOnly: true })
+        .status(200)
+        .json({ success: true, data: rest });
+    } else {
+      const generatedPassword = Math.random().toString(36).toLowerCase();
+      const hashedGeneratedPassword = await bcrypt.hash(generatedPassword, 10);
+      const name =
+        userName.trim().toLowerCase() + Math.random().toString(36).slice(-4);
+      const postUser = await User.create({
+        name: name,
+        email,
+        password: hashedGeneratedPassword,
+        avatarUrl: avatar,
+      });
+      res
+        .status(200)
+        .json({ success: true, data: `${postUser.name} created successfully` });
+    }
+  } catch (e) {
+    next({ message: " Internal error", status: 500 });
+  }
+};
+ 

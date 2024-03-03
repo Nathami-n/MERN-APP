@@ -133,3 +133,10 @@
 20240303	13:05:20	 2dc2a31f-7385-4d61-885f-9115524d6615	 POST	 http://localhost:5173	 /api/v1/sign-up
 20240303	13:05:31	 2ec62589-3934-459f-a3b9-ffaedd8dd84c	 POST	 http://localhost:5173	 /api/v1/sign-in
 20240303	13:30:02	 ca7c504a-db0b-4058-8bca-90cd1b9484b0	 POST	 http://localhost:5173	 /api/v1/sign-in
+20240303	20:16:40	 84b5c27c-8590-4060-a63d-ab98e867aa25	 POST	 http://localhost:5173	 /api/v1/googleAuth/
+20240303	20:17:33	 3ad1ad42-277e-495e-b200-c1693994f172	 POST	 http://localhost:5173	 /api/v1/sign-up
+20240303	20:17:44	 93926917-a356-45af-b920-cd609303fb57	 POST	 http://localhost:5173	 /api/v1/sign-in
+20240303	20:18:01	 1c71781c-f4fa-4f09-b324-9d1f4a311cc2	 POST	 http://localhost:5173	 /api/v1/googleAuth/
+20240303	20:20:44	 32cc0459-18b4-4ef8-bff6-767ff252e2e3	 POST	 http://localhost:5173	 /api/v1/googleAuth
+20240303	20:34:25	 e465eff5-a9f4-4791-b332-4710178414b3	 POST	 http://localhost:5173	 /api/v1/googleAuth
+20240303	20:35:18	 24727725-a9fe-468e-baea-a7b5eaf2f315	 POST	 http://localhost:5173	 /api/v1/googleAuth
