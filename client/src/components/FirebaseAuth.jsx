@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { setUser } from "../redux/features/user/userSlice";
 import { useDispatch } from "react-redux";
 import api from "../utils/postAxios";
-const url = '/api/auth/google/'
+const url = '/api/v1/googleAuth'
 const FirebaseAuth = () => {
 const dispatch = useDispatch()
   const navigate = useNavigate();
@@ -28,6 +28,7 @@ const dispatch = useDispatch()
         },
       });
       dispatch(setUser({ user: data.data }))
+      console.log(sendUser)
     } catch (e) {
       console.error(e);
     }
