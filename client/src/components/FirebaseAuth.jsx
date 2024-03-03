@@ -14,9 +14,9 @@ const dispatch = useDispatch()
       const auth = getAuth(app);
       const result = await signInWithPopup(auth, provider);
       const { user } = result;
-      const email = user.auth.email;
-      const userName = user.auth.displayName;
-      const avatar = user.metadata.photoUrl;
+      const email = user.email;
+      const userName = user.displayName;
+      const avatar = user.photoURL;
       const sendUser = {
         email,
         userName,
@@ -28,7 +28,6 @@ const dispatch = useDispatch()
         },
       });
       dispatch(setUser({ user: data.data }))
-      console.log(sendUser)
     } catch (e) {
       console.error(e);
     }
