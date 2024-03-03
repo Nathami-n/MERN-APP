@@ -27,7 +27,7 @@ export const signIn = async (req, res, next) => {
   const foundUser = await User.findOne({ email });
   if (!foundUser) {
     next({ message: "not found", status: 404 });
-    return res.status(404).send({ success: false, message: "user not found" });
+    return res.status(404).json({ success: false, message: "user not found" });
   }
   const validPassword = await bcrypt.compare(password, foundUser.password);
   if (!validPassword) {
@@ -47,7 +47,8 @@ export const signIn = async (req, res, next) => {
     .json({ success: true, data: rest });
 };
 
-export const googleAuth = async (req, res, next) => {
+
+export const googleAuthentication = async (req, res, next) => {
   const { email, avatar, userName } = req.body;
   try {
     const isUserFound = await User.findOne({ email });
@@ -64,20 +65,24 @@ export const googleAuth = async (req, res, next) => {
     } else {
       const generatedPassword = Math.random().toString(36).toLowerCase();
       const hashedGeneratedPassword = await bcrypt.hash(generatedPassword, 10);
-      const name =
-        userName.trim().toLowerCase() + Math.random().toString(36).slice(-4);
+      const name = userName.split(' ').join('').toLowerCase() + Math.random().toString(36).slice(-4);
       const postUser = await User.create({
-        name: name,
+        username:name,
         email,
         password: hashedGeneratedPassword,
         avatarUrl: avatar,
       });
+      const webtoken = jsonwebtoken.sign(
+        { id: postUser._id },
+        process.env.JWT_ACCESS_TOKEN
+      );
+      const { password: pass, ...rest } = postUser.toObject();
       res
-        .status(200)
-        .json({ success: true, data: `${postUser.name} created successfully` });
+        .cookie("access_token", webtoken, { httpOnly: true })
+        .status(201)
+        .json({ success: true, data: rest });
     }
   } catch (e) {
     next({ message: " Internal error", status: 500 });
   }
 };
- 
