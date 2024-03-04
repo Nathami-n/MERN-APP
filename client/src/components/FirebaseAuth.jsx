@@ -4,9 +4,9 @@ import { useNavigate } from "react-router-dom";
 import { setUser } from "../redux/features/user/userSlice";
 import { useDispatch } from "react-redux";
 import api from "../utils/postAxios";
-const url = '/api/v1/googleAuth'
+const url = "/api/v1/googleAuth";
 const FirebaseAuth = () => {
-const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const handleLoginwithGoogle = async () => {
     try {
@@ -27,7 +27,10 @@ const dispatch = useDispatch()
           "Content-Type": "application/json",
         },
       });
-      dispatch(setUser({ user: data.data }))
+      dispatch(setUser({ user: data.data }));
+      if (data.success === true) {
+        navigate("/");
+      }
     } catch (e) {
       console.error(e);
     }

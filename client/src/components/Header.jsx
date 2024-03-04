@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
 import {CiSearch} from 'react-icons/ci'
+import {useSelector} from 'react-redux'
 
 const Header = () => {
+  const {currentUser} = useSelector((state)=> state.user)
   return (
     <header className="w-full bg-gray-300">
       <div className=" p-2 flex justify-between max-w-7xl mx-auto items-center">
@@ -28,8 +30,8 @@ const Header = () => {
           <Link to={'/about'} className=" sm:inline text-md sm:text-xl hover:text-blue-500 hover:underline">
             About
           </Link>
-          <Link to={'/sign-in'} className="sm:inline  text-md sm:text-xl hover:text-blue-500 hover:underline">
-            Sign in
+          <Link to={'/profile'} className="sm:inline  text-md sm:text-xl hover:text-blue-500 hover:underline">
+            {currentUser ? <img src= {currentUser.avatarUrl} alt="avatar" className="rounded-full object-cover h-8 w-8 ml-3"/> : <p>Sign-In</p>}
           </Link>
         </ul>
       </div>
