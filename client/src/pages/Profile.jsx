@@ -1,13 +1,17 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { GiPadlock, GiPadlockOpen } from "react-icons/gi";
 import { useSelector } from "react-redux";
 
 const Profile = () => {
   const { currentUser } = useSelector((state) => state.user);
+  const fileRef = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
   const handlePassword = () => {
     setIsOpen(!isOpen);
   };
+  const handleUploadImage = () => {
+    fileRef.current.click()
+  }
   return (
     <div className="h-[80vh]">
       <h1 className="font-bold text-center mt-9 text-3xl text-blue-700">
@@ -15,8 +19,10 @@ const Profile = () => {
       </h1>
       <div className=" max-w-[400px] mx-auto">
         <form className="flex flex-col items-center gap-4 mt-6 cursor-pointer  ">
+          <input ref={fileRef} type="file" accept="image/*" className="hidden"/>
           <div className="rounded-full">
             <img
+              onClick={handleUploadImage}
               src={currentUser.avatarUrl}
               className="rounded-full object-contain"
             />
@@ -59,8 +65,10 @@ const Profile = () => {
           </button>
         </form>
         <div className="flex justify-between mt-3">
-          <span>Delete Account</span>
-          <span>Log out</span>
+          <span className="text-red-600 font-semibold cursor-pointer">
+            Delete Account
+          </span>
+          <span className="text-pink-900 font-semibold">Log out</span>
         </div>
       </div>
     </div>
