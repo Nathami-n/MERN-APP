@@ -6,6 +6,8 @@ const Profile = () => {
   const { currentUser } = useSelector((state) => state.user);
   const fileRef = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
+  const [image, setImage] = useState(undefined);
+  console.log(image);
   const handlePassword = () => {
     setIsOpen(!isOpen);
   };
@@ -19,7 +21,7 @@ const Profile = () => {
       </h1>
       <div className=" max-w-[400px] mx-auto">
         <form className="flex flex-col items-center gap-4 mt-6 cursor-pointer  ">
-          <input ref={fileRef} type="file" accept="image/*" className="hidden"/>
+          <input  onChange={(e)=> setImage(e.target.files[0])}ref={fileRef} type="file" accept="image/*" className="hidden"/>
           <div className="rounded-full">
             <img
               onClick={handleUploadImage}
