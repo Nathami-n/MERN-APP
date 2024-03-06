@@ -91,14 +91,19 @@ export const updateUser = async (req, res, next) => {
   const userId = req.params.id;
   const updateUser = req.body;
   const { password: usrpass, ...rest } = updateUser;
-  const userHash = await bcrypt.hash(usrpass, 10);
-  const dbUserUpdateData = { rest, password: userHash };
   try {
+    //hash password if changed
+    if (usrpass) {
+      const userHash = await bcrypt.hash(usrpass, 10);
+      updateUser.password = userHash;
+    }
+    //update user in the database
     const newUpdatedUser = await User.findOneAndUpdate(
       { _id: userId },
-      dbUserUpdateData
+      updateUser
     );
-    const { password: dbPass, ...rest} = newUpdatedUser.toObject();
+
+    const { password: dbPass, ...rest } = newUpdatedUser.toObject();
     res.status(200).json({ success: true, data: rest });
   } catch (err) {
     next(err);
