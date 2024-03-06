@@ -1,15 +1,21 @@
 import { useEffect, useRef, useState } from "react";
 import { GiPadlock, GiPadlockOpen } from "react-icons/gi";
 import { useSelector } from "react-redux";
-import { getStorage, ref, uploadBytesResumable } from "firebase/storage";
+import {
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadBytesResumable,
+} from "firebase/storage";
 import { app } from "../utils/FirebaseConfig";
 
 const Profile = () => {
   const { currentUser } = useSelector((state) => state.user);
   const fileRef = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
-  const [uploadProgress, setUploadProgress] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
   const [image, setImage] = useState(undefined);
+  const [fileUploadError, setFileUploadError] = useState(false);
   const handlePassword = () => {
     setIsOpen(!isOpen);
   };
@@ -24,16 +30,31 @@ const Profile = () => {
   }, [image]);
 
   const handleUploadImageFirebase = () => {
-    const storage = getStorage(app); // creates an instance of a storage service
-    const fileName = new Date().getTime() + image.name; // generate a unique file name
-    const storageRef = ref(storage, fileName); // create a reference to the storage service with the file stored in it or the path
-    const uploadTask = uploadBytesResumable(storageRef, image); // starts an async acton to upload the image to  the referenced storage
+    try {
+      const storage = getStorage(app); // creates an instance of a storage service
+      const fileName = new Date().getTime() + image.name; // generate a unique file name
+      const storageRef = ref(storage, fileName);
 
-    uploadTask.on("state_changed", (snapshot) => {
-      const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100; //percentage of bytes transferred on each progress made
-     setUploadProgress(Math.round(progress))
-    });
+      // create a reference to the storage service with the file stored in it or the path
+      const uploadTask = uploadBytesResumable(storageRef, image); // starts an async acton to upload the image to  the referenced storage
+      uploadTask.on("state_changed", (snapshot) => {
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100; //percentage of bytes transferred on each progress made
+        setUploadProgress(Math.round(progress));
+        (error) => {
+          setFileUploadError(true);
+        };
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadUrl) => {
+            console.log(downloadUrl);
+          });
+        };
+      });
+    } catch (e) {
+      console.error(e);
+    }
   };
+  console.log(uploadProgress);
   return (
     <div className="h-[80vh]">
       <h1 className="font-bold text-center mt-9 text-3xl text-blue-700">
