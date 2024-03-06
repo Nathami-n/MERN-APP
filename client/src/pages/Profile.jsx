@@ -72,6 +72,8 @@ const Profile = () => {
   };
   const handleUpdateProfile = async (e) => {
     e.preventDefault();
+    setFormUpload((prevFormUpload)=> ({...prevFormUpload, email, username:user_name, password}))
+
     try {
       const { data } = await api.put(postUrl, JSON.stringify(formUpload), {
         headers: { "Content-Type": "application/json" },
