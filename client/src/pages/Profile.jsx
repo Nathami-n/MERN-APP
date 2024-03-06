@@ -11,9 +11,14 @@ import { app } from "../utils/FirebaseConfig";
 import api from "../utils/postAxios";
 import { setUser } from "../redux/features/user/userSlice";
 import { useDispatch } from "react-redux";
+import { updateform } from "../redux/features/user/formSlice";
 
 const Profile = () => {
   const { currentUser } = useSelector((state) => state.user);
+  const { updatedUser } = useSelector((state) => state.profile);
+  const { email, user_name, password } = useSelector(
+    (state) => state.form.formData
+  );
   const postUrl = `/api/v1/profile/${currentUser._id}`;
   const dispatch = useDispatch();
   const fileRef = useRef(null);
@@ -21,7 +26,7 @@ const Profile = () => {
   const [uploadProgress, setUploadProgress] = useState(0);
   const [image, setImage] = useState(undefined);
   const [fileUploadError, setFileUploadError] = useState(false);
-  const [formUpload, setFormUpload] = useState(currentUser);
+  const [formUpload, setFormUpload] = useState({ _id: currentUser._id });
   const handlePassword = () => {
     setIsOpen(!isOpen);
   };
@@ -99,22 +104,36 @@ const Profile = () => {
             />
           </div>
           <input
+            onChange={(e) =>
+              dispatch(updateform({ field: e.target.id, data: e.target.value }))
+            }
             autoComplete="false"
             type="text"
+            value={user_name}
             id="user_name"
             placeholder="username"
             className="outline-none border p-3  w-full rounded-md"
           />
           <input
+            onChange={(e) =>
+              dispatch(updateform({ field: e.target.id, data: e.target.value }))
+            }
             type="text"
             id="email"
+            value={email}
             placeholder="email"
             className="outline-none border p-3  w-full rounded-md"
           />
           <div className="flex relative w-full">
             <input
+              onChange={(e) =>
+                dispatch(
+                  updateform({ field: e.target.id, data: e.target.value })
+                )
+              }
               type={isOpen ? "text" : "password"}
               id="password"
+              value={password}
               placeholder="password"
               className="outline-none border relative p-3 flex-1 "
             />
