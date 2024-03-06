@@ -6,6 +6,6 @@ const router = new Router();
  router.route('/sign-up').post(signUp)
  router.route('/sign-in').post(signIn)
  router.route('/googleAuth').post(googleAuthentication)
- router.route('/profile/:id', updateUser);
+ router.route('/profile/:id').put(updateUser);
 
  export default router;

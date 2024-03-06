@@ -63,9 +63,11 @@ export const googleAuthentication = async (req, res, next) => {
     } else {
       const generatedPassword = Math.random().toString(36).toLowerCase();
       const hashedGeneratedPassword = await bcrypt.hash(generatedPassword, 10);
-      const name = userName.split(' ').join('').toLowerCase() + Math.random().toString(36).slice(-4);
+      const name =
+        userName.split(" ").join("").toLowerCase() +
+        Math.random().toString(36).slice(-4);
       const postUser = await User.create({
-        username:name,
+        username: name,
         email,
         password: hashedGeneratedPassword,
         avatarUrl: avatar,
@@ -85,8 +87,20 @@ export const googleAuthentication = async (req, res, next) => {
   }
 };
 
-export const updateUser =  async (req, res, next) => {
+export const updateUser = async (req, res, next) => {
   const userId = req.params.id;
-  const updatedData = req.body;
-  
-}
+  const updateUser = req.body;
+  const { password: usrpass, ...rest } = updateUser;
+  const userHash = await bcrypt.hash(usrpass, 10);
+  const dbUserUpdateData = { rest, password: userHash };
+  try {
+    const newUpdatedUser = await User.findOneAndUpdate(
+      { _id: userId },
+      dbUserUpdateData
+    );
+    const { password: dbPass, ...rest} = newUpdatedUser.toObject();
+    res.status(200).json({ success: true, data: rest });
+  } catch (err) {
+    next(err);
+  }
+};
