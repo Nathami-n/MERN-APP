@@ -46,8 +46,6 @@ export const signIn = async (req, res, next) => {
     .status(200)
     .json({ success: true, data: rest });
 };
-
-
 export const googleAuthentication = async (req, res, next) => {
   const { email, avatar, userName } = req.body;
   try {
@@ -86,3 +84,9 @@ export const googleAuthentication = async (req, res, next) => {
     next({ message: " Internal error", status: 500 });
   }
 };
+
+export const updateUser =  async (req, res, next) => {
+  const userId = req.params.id;
+  const updatedData = req.body;
+  
+}
