@@ -16,6 +16,7 @@ const Profile = () => {
   const [uploadProgress, setUploadProgress] = useState(0);
   const [image, setImage] = useState(undefined);
   const [fileUploadError, setFileUploadError] = useState(false);
+  const [formUpload, setFormUpload] = useState({});
   const handlePassword = () => {
     setIsOpen(!isOpen);
   };
@@ -37,24 +38,30 @@ const Profile = () => {
 
       // create a reference to the storage service with the file stored in it or the path
       const uploadTask = uploadBytesResumable(storageRef, image); // starts an async acton to upload the image to  the referenced storage
-      uploadTask.on("state_changed", (snapshot) => {
-        const progress =
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100; //percentage of bytes transferred on each progress made
-        setUploadProgress(Math.round(progress));
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100; //percentage of bytes transferred on each progress made
+          setUploadProgress(Math.round(progress));
+        },
         (error) => {
           setFileUploadError(true);
-        };
+          console.log(error);
+        },
         () => {
           getDownloadURL(uploadTask.snapshot.ref).then((downloadUrl) => {
-            console.log(downloadUrl);
+            setFormUpload({ ...formUpload, imageUrl: downloadUrl });
           });
-        };
-      });
+        }
+      );
     } catch (e) {
       console.error(e);
     }
   };
-  console.log(uploadProgress);
+
+  console.log(formUpload);
+
   return (
     <div className="h-[80vh]">
       <h1 className="font-bold text-center mt-9 text-3xl text-blue-700">
