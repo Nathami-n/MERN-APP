@@ -10,10 +10,12 @@ import {
 import { app } from "../utils/FirebaseConfig";
 import api from "../utils/postAxios";
 import { setUser } from "../redux/features/user/userSlice";
-import { Dispatch } from "@reduxjs/toolkit";
+import { useDispatch } from "react-redux";
+
 const Profile = () => {
-  const dispatch = Dispatch();
   const { currentUser } = useSelector((state) => state.user);
+  const postUrl = `/api/v1/profile/${currentUser._id}`;
+  const dispatch = useDispatch();
   const fileRef = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
@@ -66,7 +68,7 @@ const Profile = () => {
   const handleUpdateProfile = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await api.put(formUpload, {
+      const { data } = await api.put(postUrl, JSON.stringify(formUpload), {
         headers: { "Content-Type": "application/json" },
       });
       dispatch(setUser({ user: data.data }));
