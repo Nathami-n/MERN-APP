@@ -8,28 +8,29 @@ import {
   uploadBytesResumable,
 } from "firebase/storage";
 import { app } from "../utils/FirebaseConfig";
-
+import api from "../utils/postAxios";
+import { setUser } from "../redux/features/user/userSlice";
+import { Dispatch } from "@reduxjs/toolkit";
 const Profile = () => {
+  const dispatch = Dispatch();
   const { currentUser } = useSelector((state) => state.user);
   const fileRef = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [image, setImage] = useState(undefined);
   const [fileUploadError, setFileUploadError] = useState(false);
-  const [formUpload, setFormUpload] = useState({});
+  const [formUpload, setFormUpload] = useState(currentUser);
   const handlePassword = () => {
     setIsOpen(!isOpen);
   };
   const handleUploadImage = () => {
     fileRef.current.click();
   };
-
   useEffect(() => {
     if (image) {
       handleUploadImageFirebase();
     }
   }, [image]);
-
   const handleUploadImageFirebase = () => {
     try {
       const storage = getStorage(app); // creates an instance of a storage service
@@ -51,7 +52,10 @@ const Profile = () => {
         },
         () => {
           getDownloadURL(uploadTask.snapshot.ref).then((downloadUrl) => {
-            setFormUpload({ ...formUpload, imageUrl: downloadUrl });
+            setFormUpload((prevFormUpload) => ({
+              ...prevFormUpload,
+              imageUrl: downloadUrl,
+            }));
           });
         }
       );
@@ -59,8 +63,17 @@ const Profile = () => {
       console.error(e);
     }
   };
-
-  console.log(formUpload);
+  const handleUpdateProfile = async (e) => {
+    e.preventDefault();
+    try {
+      const { data } = await api.put(formUpload, {
+        headers: { "Content-Type": "application/json" },
+      });
+      dispatch(setUser({ user: data.data }));
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <div className="h-[80vh]">
@@ -116,7 +129,10 @@ const Profile = () => {
             )}
           </div>
 
-          <button className="w-full bg-blue-400 p-3 rounded-md shadow-md hover:bg-green-300 text-white">
+          <button
+            onClick={handleUpdateProfile}
+            className="w-full bg-blue-400 p-3 rounded-md shadow-md hover:bg-green-300 text-white"
+          >
             Update Profile
           </button>
         </form>
