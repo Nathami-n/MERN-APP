@@ -26,7 +26,7 @@ const Profile = () => {
   const [uploadProgress, setUploadProgress] = useState(0);
   const [image, setImage] = useState(undefined);
   const [fileUploadError, setFileUploadError] = useState(false);
-  const [formUpload, setFormUpload] = useState({ _id: currentUser._id });
+  const [formUpload, setFormUpload] = useState({});
   const handlePassword = () => {
     setIsOpen(!isOpen);
   };
@@ -61,7 +61,7 @@ const Profile = () => {
           getDownloadURL(uploadTask.snapshot.ref).then((downloadUrl) => {
             setFormUpload((prevFormUpload) => ({
               ...prevFormUpload,
-              imageUrl: downloadUrl,
+              avatarUrl: downloadUrl,
             }));
           });
         }
@@ -72,7 +72,12 @@ const Profile = () => {
   };
   const handleUpdateProfile = async (e) => {
     e.preventDefault();
-    setFormUpload((prevFormUpload)=> ({...prevFormUpload, email, username:user_name, password}))
+    setFormUpload((prevFormUpload) => ({
+      ...prevFormUpload,
+      email,
+      username: user_name,
+      password,
+    }));
 
     try {
       const { data } = await api.put(postUrl, JSON.stringify(formUpload), {
@@ -101,10 +106,22 @@ const Profile = () => {
           <div className="rounded-full">
             <img
               onClick={handleUploadImage}
-              src={currentUser.avatarUrl}
+              src={formUpload.avatarUrl || currentUser.avatarUrl}
               className="rounded-full object-contain"
             />
           </div>
+
+          <p>
+            {fileUploadError ? (
+              <span className="text-red-600"> Error Uploading Image</span>
+            ) : uploadProgress > 0 && uploadProgress < 100 ? (
+              <span>{`Uploading ${uploadProgress}%`}</span>
+            ) : uploadProgress === 100 ? (
+              <span> Image uploaded with success</span>
+            ) : (
+              ""
+            )}
+          </p>
           <input
             onChange={(e) =>
               dispatch(updateform({ field: e.target.id, data: e.target.value }))
